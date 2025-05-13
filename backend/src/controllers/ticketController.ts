@@ -4,7 +4,7 @@ import { Event } from '../models/Event';
 import { Ticket } from '../models/Ticket';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || '', {
-  apiVersion: '2025-04-30.basil',
+  apiVersion: '2022-11-15',
 });
 
 interface AuthRequest extends Request {
