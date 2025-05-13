@@ -24,7 +24,9 @@ const app = express();
 
 // Middleware
 app.use(cors({
-  origin: ['http://localhost:3000', 'http://localhost:3001'],
+  origin: [ 'https://event-flix-five.vercel.app', // your Vercel frontend
+    'http://localhost:3000',              // local dev
+    'http://localhost:3001'],
   credentials: true,
 }));
 app.use(express.json());
