@@ -4,6 +4,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import Layout from '@/components/Layout';
 import Image from "next/image";
+import { format } from 'date-fns';
 
 export default function Home() {
   const [searchQuery, setSearchQuery] = useState('');
@@ -37,32 +38,57 @@ export default function Home() {
   ];
 
   return (
-    <Layout>
+    <>
       {/* Hero Section */}
-      <div className="min-h-screen flex flex-col bg-gray-50">
-        <div className="relative h-[60vh] w-full flex items-center justify-center bg-black">
-          <Image
-            src="/images/concert-crowd.jpg"
-            alt="Concert Crowd Hero"
-            layout="fill"
-            objectFit="cover"
-            className="opacity-70"
-            priority
+      <section
+        className="relative flex flex-col items-center justify-center text-center text-white h-[500px] bg-gray-50"
+        style={{
+          backgroundImage: "url('/images/concert-crowd.jpg')",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          backgroundRepeat: "no-repeat",
+        }}
+      >
+        <Image
+          src="/images/concert-crowd.jpg"
+          alt="Concert Crowd Hero"
+          layout="fill"
+          objectFit="cover"
+          className="opacity-70"
+          priority
+        />
+        <div className="absolute z-10 text-center w-full px-4">
+          <h1 className="text-4xl md:text-6xl font-bold text-white mb-4 drop-shadow-lg">
+            Ticketing for events
+          </h1>
+          <p className="text-xl md:text-2xl text-black mb-8 drop-shadow-lg">
+            Made <span className="italic">for</span> event creators, <span className="italic">by</span> event creators.
+          </p>
+          <Link
+            href="/events"
+            className="inline-block bg-black/60 text-white text-lg font-semibold px-8 py-3 rounded shadow-lg transition hover:bg-black/80 backdrop-blur-md"
+          >
+            Browse Events
+          </Link>
+        </div>
+      </section>
+
+      {/* Tagline, Search Bar, and Scroll Indicator */}
+      <div className="flex flex-col items-center justify-center py-8 bg-gray-50">
+        {/* Tagline */}
+        <h2 className="text-2xl md:text-3xl font-semibold text-center text-black mb-3">Discover, Attend, and Experience Unforgettable Events!</h2>
+        {/* Search Bar */}
+        <form className="w-full max-w-md flex mb-6" onSubmit={e => { e.preventDefault(); }}>
+          <input
+            type="text"
+            placeholder="Search for events, artists, or venues..."
+            className="flex-1 px-4 py-3 rounded-l-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-black"
           />
-          <div className="absolute z-10 text-center w-full px-4">
-            <h1 className="text-4xl md:text-6xl font-bold text-white mb-4 drop-shadow-lg">
-              Ticketing for events
-            </h1>
-            <p className="text-xl md:text-2xl text-white mb-8 drop-shadow-lg">
-              Made <span className="italic">for</span> event creators, <span className="italic">by</span> event creators.
-            </p>
-            <Link
-              href="/events"
-              className="inline-block bg-purple-600 hover:bg-purple-700 text-white text-lg font-semibold px-8 py-3 rounded shadow transition"
-            >
-              Browse Events
-            </Link>
-          </div>
+          <button type="submit" className="px-6 py-3 bg-black text-white rounded-r-md font-semibold hover:bg-gray-900 transition">Search</button>
+        </form>
+        {/* Animated Scroll Down Indicator */}
+        <div className="flex flex-col items-center mt-2">
+          <span className="animate-bounce text-4xl text-black/40">&#8595;</span>
         </div>
       </div>
 
@@ -85,15 +111,15 @@ export default function Home() {
                   />
                 </div>
                 <div className="p-6 bg-white">
-                  <h3 className="text-xl font-semibold text-gray-900 group-hover:text-purple-600">
+                  <h3 className="text-xl font-semibold text-gray-900 group-hover:text-black">
                     {event.title}
                   </h3>
                   <div className="mt-2 text-gray-500">
-                    <p>{new Date(event.date).toLocaleDateString()}</p>
+                    <p>{format(new Date(event.date), 'dd/MM/yyyy')}</p>
                     <p>{event.location}</p>
                   </div>
                   <div className="mt-4">
-                    <span className="text-lg font-bold text-purple-600">
+                    <span className="text-lg font-bold text-black">
                       {event.price}
                     </span>
                   </div>
@@ -127,6 +153,6 @@ export default function Home() {
           </div>
         </div>
       </div>
-    </Layout>
+    </>
   );
 }

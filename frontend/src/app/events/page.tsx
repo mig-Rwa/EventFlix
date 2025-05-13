@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
+import { format } from 'date-fns';
 
 const mockEvents = [
   {
@@ -10,21 +11,24 @@ const mockEvents = [
     title: "The Barrel House Ball Room",
     organizer: "Cameron Whitcomb",
     price: 120,
-    image: "/images/event1.jpg",
+    image: "/images/people-concert-with-smoke-overlay-texture.jpg",
+    date: "2025-04-10",
   },
   {
     id: 2,
     title: "Resonant Language Crawdad Sniper Onyx Garden Waterchild Pluff",
     organizer: "AC C",
     price: 30,
-    image: "/images/event2.jpg",
+    image: "/images/sample3.JPG",
+    date: "2025-05-01",
   },
   {
     id: 3,
     title: "The Emo Festival Comes to Glasgow",
     organizer: "Classic Grand",
     price: 50,
-    image: "/images/event3.jpg",
+    image: "/images/sample2.JPG",
+    date: "2025-06-10",
   },
 ];
 
@@ -34,7 +38,10 @@ export default function EventsPage() {
   const [sort, setSort] = useState("newest");
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col">
+    <>
+      <a href="/dashboard" className="fixed top-6 left-6 z-50 bg-black/60 text-white rounded px-4 py-2 shadow-lg hover:bg-black/80 backdrop-blur-md transition">Home</a>
+      {/* rest of the page below */}
+      <div className="min-h-screen bg-gray-50 flex flex-col">
       {/* Hero Section */}
       <div className="relative h-72 w-full flex items-center justify-center bg-black">
         <Image
@@ -104,7 +111,10 @@ export default function EventsPage() {
               <div className="text-orange-600 font-bold text-lg mb-1">${event.price.toFixed(2)}</div>
               <div className="font-semibold text-gray-900 text-base mb-1 truncate">{event.title}</div>
               <div className="text-gray-600 text-sm mb-2">{event.organizer}</div>
-              <Link href={`/events/${event.id}`} className="text-purple-600 hover:underline text-sm font-medium">
+              <div className="text-gray-500 text-xs mb-2">
+                {format(new Date(event.date), 'dd/MM/yyyy')}
+              </div>
+              <Link href={`/events/${event.id}`} className="text-black hover:underline text-sm font-medium">
                 View Details
               </Link>
             </div>
@@ -112,5 +122,6 @@ export default function EventsPage() {
         ))}
       </div>
     </div>
+    </>
   );
 } 
