@@ -29,8 +29,6 @@ export default function EventsPage() {
     fetchEvents();
   }, []);
 
-
-export default function EventsPage() {
   return (
     <>
       <a href="/dashboard" className="fixed top-6 left-6 z-50 bg-black/60 text-white rounded px-4 py-2 shadow-lg hover:bg-black/80 backdrop-blur-md transition">Home</a>
@@ -114,4 +112,4 @@ export default function EventsPage() {
     </div>
     </>
   );
-} 
+}
