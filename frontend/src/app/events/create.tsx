@@ -25,7 +25,9 @@ export default function CreateEventPage() {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleChange = (
+  e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
+) => {
     const { name, value } = e.target;
     if (name.startsWith("location.")) {
       setForm({
