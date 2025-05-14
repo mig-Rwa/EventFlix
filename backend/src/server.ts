@@ -24,14 +24,18 @@ const app = express();
 
 // Middleware
 app.use(cors({
-  origin: [ 'https://event-flix-five.vercel.app', // your Vercel frontend
+  origin: [
+    'https://event-flix-five.vercel.app', // your Vercel frontend
     'http://localhost:3000',              // local dev
-    'http://localhost:3001'],
+    'http://localhost:3001',              // another local dev port
+    'http://localhost:5000'               // backend-to-backend if needed
+  ],
   credentials: true,
 }));
 app.use(express.json());
 
 // Database connection
+console.log('Connecting to MongoDB:', process.env.MONGODB_URI);
 mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/eventflix')
   .then(() => console.log('Connected to MongoDB'))
   .catch((error) => console.error('MongoDB connection error:', error));
