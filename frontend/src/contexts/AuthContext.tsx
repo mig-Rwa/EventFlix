@@ -74,6 +74,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
       const userData = await response.json();
       setUser(userData);
+      // Store JWT token in localStorage for authenticated API calls
+      if (userData.token) {
+        localStorage.setItem('token', userData.token);
+      }
     } catch (error) {
       console.error('Login failed:', error);
       throw error;
