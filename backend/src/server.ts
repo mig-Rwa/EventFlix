@@ -25,10 +25,11 @@ const app = express();
 // Middleware
 app.use(cors({
   origin: [
-    'https://event-flix-five.vercel.app', // your Vercel frontend
-    'http://localhost:3000',              // local dev
-    'http://localhost:3001',              // another local dev port
-    'http://localhost:5000'               // backend-to-backend if needed
+    'https://event-flix-five.vercel.app',
+    'https://event-flix-git-master-mbabazis-projects-92e18a01.vercel.app', // new deployed frontend
+    'http://localhost:3000',
+    'http://localhost:3001',
+    'http://localhost:5000'
   ],
   credentials: true,
 }));
