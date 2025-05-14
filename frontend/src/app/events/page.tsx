@@ -2,41 +2,33 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { format } from 'date-fns';
 
-const mockEvents = [
-  {
-    id: 1,
-    title: "The Barrel House Ball Room",
-    organizer: "Cameron Whitcomb",
-    price: 120,
-    image: "/images/people-concert-with-smoke-overlay-texture.jpg",
-    date: "2025-04-10",
-  },
-  {
-    id: 2,
-    title: "Resonant Language Crawdad Sniper Onyx Garden Waterchild Pluff",
-    organizer: "AC C",
-    price: 30,
-    image: "/images/sample3.JPG",
-    date: "2025-05-01",
-  },
-  {
-    id: 3,
-    title: "The Emo Festival Comes to Glasgow",
-    organizer: "Classic Grand",
-    price: 50,
-    image: "/images/sample2.JPG",
-    date: "2025-06-10",
-  },
-];
+const API_URL = process.env.NEXT_PUBLIC_API_URL;
+
+const [events, setEvents] = useState<any[]>([]);
+const [loading, setLoading] = useState(true);
+const [search, setSearch] = useState("");
+const [category, setCategory] = useState("");
+const [sort, setSort] = useState("newest");
+
+useEffect(() => {
+  async function fetchEvents() {
+    try {
+      const res = await fetch(`${API_URL}/events`);
+      const data = await res.json();
+      setEvents(data);
+    } catch (err) {
+      setEvents([]);
+    } finally {
+      setLoading(false);
+    }
+  }
+  fetchEvents();
+}, []);
 
 export default function EventsPage() {
-  const [search, setSearch] = useState("");
-  const [category, setCategory] = useState("");
-  const [sort, setSort] = useState("newest");
-
   return (
     <>
       <a href="/dashboard" className="fixed top-6 left-6 z-50 bg-black/60 text-white rounded px-4 py-2 shadow-lg hover:bg-black/80 backdrop-blur-md transition">Home</a>
@@ -45,19 +37,17 @@ export default function EventsPage() {
       {/* Hero Section */}
       <div className="relative h-72 w-full flex items-center justify-center bg-black">
         <Image
-          src="/images/hero-bg.jpg"
-          alt="Events Hero"
+          src="/images/concert-crowd.jpg"
+          alt="Concert Crowd Hero"
           layout="fill"
           objectFit="cover"
-          className="opacity-60"
+          className="opacity-70"
+          priority
         />
-        <div className="absolute z-10 text-center w-full">
-          <h1 className="text-4xl md:text-6xl font-bold text-white mb-4 drop-shadow-lg">
-            Buy and resell tickets
+        <div className="absolute z-10 text-center w-full px-4">
+          <h1 className="text-4xl md:text-5xl font-bold text-white mb-2 drop-shadow-lg">
+            Discover Events
           </h1>
-          <p className="text-xl md:text-2xl text-white drop-shadow-lg">
-            EventFlixCyprus helps connect ticket buyers with event ticket resellers.
-          </p>
         </div>
       </div>
 
@@ -95,31 +85,29 @@ export default function EventsPage() {
         </div>
       </div>
 
-      {/* Event Grid */}
-      <div className="max-w-5xl mx-auto w-full px-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 pb-12">
-        {mockEvents.map(event => (
-          <div key={event.id} className="bg-white rounded-lg shadow hover:shadow-lg transition overflow-hidden">
-            <div className="relative h-48 w-full">
-              <Image
-                src={event.image}
-                alt={event.title}
-                layout="fill"
-                objectFit="cover"
-              />
-            </div>
-            <div className="p-4">
-              <div className="text-orange-600 font-bold text-lg mb-1">${event.price.toFixed(2)}</div>
-              <div className="font-semibold text-gray-900 text-base mb-1 truncate">{event.title}</div>
-              <div className="text-gray-600 text-sm mb-2">{event.organizer}</div>
-              <div className="text-gray-500 text-xs mb-2">
-                {format(new Date(event.date), 'dd/MM/yyyy')}
+      {/* Events List */}
+      <div className="max-w-7xl mx-auto px-4 py-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
+        {loading ? (
+          <div>Loading events...</div>
+        ) : events.length === 0 ? (
+          <div>No events found.</div>
+        ) : (
+          events.map((event) => (
+            <div key={event._id} className="bg-white rounded-lg shadow-md overflow-hidden">
+              <Image src={event.imageUrl || "/images/concert-crowd.jpg"} alt={event.title} width={400} height={250} className="w-full h-48 object-cover" />
+              <div className="p-4">
+                <div className="font-semibold text-gray-900 text-base mb-1 truncate">{event.title}</div>
+                <div className="text-gray-600 text-sm mb-2">{event.location?.address || event.location}</div>
+                <div className="text-gray-500 text-xs mb-2">
+                  {format(new Date(event.date), 'dd/MM/yyyy')}
+                </div>
+                <Link href={`/events/${event._id}`} className="text-black hover:underline text-sm font-medium">
+                  View Details
+                </Link>
               </div>
-              <Link href={`/events/${event.id}`} className="text-black hover:underline text-sm font-medium">
-                View Details
-              </Link>
             </div>
-          </div>
-        ))}
+          ))
+        )}
       </div>
     </div>
     </>
