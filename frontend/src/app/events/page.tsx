@@ -7,26 +7,28 @@ import { format } from 'date-fns';
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
-const [events, setEvents] = useState<any[]>([]);
-const [loading, setLoading] = useState(true);
-const [search, setSearch] = useState("");
-const [category, setCategory] = useState("");
-const [sort, setSort] = useState("newest");
+export default function EventsPage() {
+  const [events, setEvents] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [search, setSearch] = useState("");
+  const [category, setCategory] = useState("");
+  const [sort, setSort] = useState("newest");
 
-useEffect(() => {
-  async function fetchEvents() {
-    try {
-      const res = await fetch(`${API_URL}/events`);
-      const data = await res.json();
-      setEvents(data);
-    } catch (err) {
-      setEvents([]);
-    } finally {
-      setLoading(false);
+  useEffect(() => {
+    async function fetchEvents() {
+      try {
+        const res = await fetch(`${API_URL}/events`);
+        const data = await res.json();
+        setEvents(data);
+      } catch (err) {
+        setEvents([]);
+      } finally {
+        setLoading(false);
+      }
     }
-  }
-  fetchEvents();
-}, []);
+    fetchEvents();
+  }, []);
+
 
 export default function EventsPage() {
   return (
