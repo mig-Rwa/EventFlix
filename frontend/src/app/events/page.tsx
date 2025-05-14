@@ -19,7 +19,12 @@ export default function EventsPage() {
       try {
         const res = await fetch(`${API_URL}/events`);
         const data = await res.json();
-        setEvents(data);
+        console.log("Fetched events data:", data);
+        if (Array.isArray(data)) {
+          setEvents(data);
+        } else {
+          setEvents([]);
+        }
       } catch (err) {
         setEvents([]);
       } finally {
