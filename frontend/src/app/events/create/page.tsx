@@ -22,7 +22,6 @@ export default function CreateEventPage() {
   });
 
   const [imageFile, setImageFile] = useState<File | null>(null);
-  });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
