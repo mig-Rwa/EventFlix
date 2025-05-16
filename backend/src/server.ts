@@ -1,5 +1,13 @@
-import express from 'express';
-import path from 'path';
+import express from "express";
+import fs from "fs";
+import path from "path";
+
+// Ensure uploads directory exists
+const uploadsDir = path.join(__dirname, "public", "uploads");
+if (!fs.existsSync(uploadsDir)) {
+  fs.mkdirSync(uploadsDir, { recursive: true });
+}
+
 import cors from 'cors';
 import dotenv from 'dotenv';
 import mongoose from 'mongoose';
