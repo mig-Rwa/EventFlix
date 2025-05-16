@@ -1,12 +1,10 @@
 import express from 'express';
 import multer from 'multer';
 import path from 'path';
-import { Request } from 'express';
+import { Request, Response } from 'express';
+import { Event } from '../models/Event';
 
-// Extend Request type to include file
-interface MulterRequest extends Request {
-  file: Express.Multer.File;
-}
+
 
 const storage = multer.diskStorage({
   destination: function (req: Request, file: Express.Multer.File, cb: (error: Error | null, destination: string) => void) {
@@ -36,42 +34,28 @@ router.get('/', getEvents);
 router.get('/:id', getEventById);
 
 // Protected routes
-router.post('/', auth, upload.single('image'), async (req: MulterRequest, res) => {
+router.post('/', auth, upload.single('image'), async (req: Request, res: Response) => {
   try {
+    if (!req.file) {
+      return res.status(400).json({ error: 'Image file is required.' });
+    }
     const { title, description, date, category, status, ticketTypes, location } = req.body;
-    const organizer = req.user._id; // assumes auth middleware sets req.user
-    const imageUrl = req.file ? `/uploads/${req.file.filename}` : undefined;
+    const organizer = (req as any).user._id; // assumes auth middleware sets req.user
 
-    if (!imageUrl) {
-      return res.status(400).json({ error: 'Image is required.' });
-    }
-
-    // Parse ticketTypes if sent as JSON string
-    let parsedTicketTypes = [];
-    if (ticketTypes) {
-      parsedTicketTypes = typeof ticketTypes === 'string' ? JSON.parse(ticketTypes) : ticketTypes;
-    }
-
-    // Parse location if sent as JSON string
-    let parsedLocation = {};
-    if (location) {
-      parsedLocation = typeof location === 'string' ? JSON.parse(location) : location;
-    }
-
-    const event = await Event.create({
+    const newEvent = await Event.create({
       title,
       description,
       date,
       category,
       status,
-      ticketTypes: parsedTicketTypes,
-      location: parsedLocation,
+      ticketTypes: typeof ticketTypes === 'string' ? JSON.parse(ticketTypes) : ticketTypes,
+      location: typeof location === 'string' ? JSON.parse(location) : location,
       organizer,
-      imageUrl
+      imageUrl: `/uploads/${req.file.filename}`,
     });
-    res.status(201).json(event);
-  } catch (err) {
-    console.error(err);
+
+    res.status(201).json(newEvent);
+  } catch (error) {
     res.status(500).json({ error: 'Failed to create event' });
   }
 });
