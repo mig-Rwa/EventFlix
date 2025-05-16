@@ -15,7 +15,6 @@ export default function CreateEventPage() {
       country: "",
     },
     category: "",
-    imageUrl: "",
     status: "published",
     ticketTypes: [
       { name: "", price: 0, quantity: 0 },
@@ -63,13 +62,22 @@ export default function CreateEventPage() {
     setSuccess("");
     try {
       const token = localStorage.getItem("token");
+      const formData = new FormData();
+      formData.append("title", form.title);
+      formData.append("description", form.description);
+      formData.append("date", form.date);
+      formData.append("category", form.category);
+      formData.append("status", form.status);
+      formData.append("location", JSON.stringify(form.location));
+      formData.append("ticketTypes", JSON.stringify(form.ticketTypes));
+      if (imageFile) formData.append("image", imageFile);
+
       const res = await fetch(`${API_URL}/events`, {
         method: "POST",
         headers: {
-          "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify(form),
+        body: formData,
       });
       if (!res.ok) {
         const data = await res.json();
@@ -82,10 +90,10 @@ export default function CreateEventPage() {
         date: "",
         location: { address: "", city: "", state: "", country: "" },
         category: "",
-        imageUrl: "",
         status: "published",
         ticketTypes: [{ name: "", price: 0, quantity: 0 }],
       });
+      setImageFile(null);
     } catch (err: any) {
       setError(err.message);
     } finally {
@@ -132,8 +140,8 @@ export default function CreateEventPage() {
           <input name="category" value={form.category} onChange={handleChange} className="input input-bordered w-full" required />
         </div>
         <div>
-          <label className="block font-semibold">Image URL</label>
-          <input name="imageUrl" value={form.imageUrl} onChange={handleChange} className="input input-bordered w-full" required />
+          <label className="block font-semibold">Event Image</label>
+          <input type="file" name="image" accept="image/*" onChange={e => setImageFile(e.target.files?.[0] || null)} className="input input-bordered w-full" required />
         </div>
         <div>
           <label className="block font-semibold">Ticket Types</label>
