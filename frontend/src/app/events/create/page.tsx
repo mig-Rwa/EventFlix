@@ -20,21 +20,8 @@ export default function CreateEventPage() {
       { name: "", price: 0, quantity: 0 },
     ],
   });
+
   const [imageFile, setImageFile] = useState<File | null>(null);
-    title: "",
-    description: "",
-    date: "",
-    location: {
-      address: "",
-      city: "",
-      state: "",
-      country: "",
-    },
-    category: "",
-    status: "published",
-    ticketTypes: [
-      { name: "", price: 0, quantity: 0 },
-    ],
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
