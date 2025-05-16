@@ -44,6 +44,9 @@ app.use(cors({
 }));
 app.use(express.json());
 
+// Serve uploads directory as static
+app.use('/uploads', express.static(path.join(process.cwd(), 'public', 'uploads')));
+
 // Database connection
 console.log('Connecting to MongoDB:', process.env.MONGODB_URI);
 mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/eventflix')
