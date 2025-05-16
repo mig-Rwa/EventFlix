@@ -1,16 +1,23 @@
 import express from 'express';
 import multer from 'multer';
 import path from 'path';
+import { Request } from 'express';
+
+// Extend Request type to include file
+interface MulterRequest extends Request {
+  file: Express.Multer.File;
+}
 
 const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
+  destination: function (req: Request, file: Express.Multer.File, cb: (error: Error | null, destination: string) => void) {
     cb(null, path.join(__dirname, '../../public/uploads'));
   },
-  filename: function (req, file, cb) {
+  filename: function (req: Request, file: Express.Multer.File, cb: (error: Error | null, filename: string) => void) {
     cb(null, Date.now() + '-' + file.originalname);
   }
 });
 const upload = multer({ storage });
+
 import {
   createEvent,
   getEvents,
@@ -29,7 +36,7 @@ router.get('/', getEvents);
 router.get('/:id', getEventById);
 
 // Protected routes
-router.post('/', auth, upload.single('image'), async (req, res) => {
+router.post('/', auth, upload.single('image'), async (req: MulterRequest, res) => {
   try {
     const { title, description, date, category, status, ticketTypes, location } = req.body;
     const organizer = req.user._id; // assumes auth middleware sets req.user
