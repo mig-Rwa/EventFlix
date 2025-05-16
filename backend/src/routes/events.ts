@@ -36,7 +36,8 @@ router.get('/:id', getEventById);
 // Protected routes
 router.post('/', auth, upload.single('image'), async (req: Request, res: Response) => {
   try {
-    if (!req.file) {
+    const file = (req as any).file;
+    if (!file) {
       return res.status(400).json({ error: 'Image file is required.' });
     }
     const { title, description, date, category, status, ticketTypes, location } = req.body;
@@ -51,7 +52,7 @@ router.post('/', auth, upload.single('image'), async (req: Request, res: Respons
       ticketTypes: typeof ticketTypes === 'string' ? JSON.parse(ticketTypes) : ticketTypes,
       location: typeof location === 'string' ? JSON.parse(location) : location,
       organizer,
-      imageUrl: `/uploads/${req.file.filename}`,
+      imageUrl: `/uploads/${file.filename}`,
     });
 
     res.status(201).json(newEvent);
