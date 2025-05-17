@@ -7,6 +7,14 @@ import { format } from 'date-fns';
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
+function getImageUrl(imageUrl: string) {
+  if (!imageUrl) return '/default-image.png'; // fallback if needed
+  if (imageUrl.startsWith('http')) return imageUrl;
+  // Remove accidental /api prefix
+  return `${API_URL}${imageUrl.replace(/^\/api/, '')}`;
+}
+
+
 export default function EventsPage() {
   const [events, setEvents] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
@@ -102,18 +110,12 @@ export default function EventsPage() {
           events.map((event) => (
             <div key={event._id} className="bg-white rounded-lg shadow-md overflow-hidden">
               <Image
-  src={
-    event.imageUrl.startsWith('http')
-      ? event.imageUrl
-      : `${process.env.NEXT_PUBLIC_API_URL}${event.imageUrl.replace(/^\/api\/uploads/, '/uploads')}`
-  }
-
-  unoptimized
-  alt={event.title}
-  width={400}
-  height={250}
-  className="w-full h-48 object-cover"
-/>
+                src={getImageUrl(event.imageUrl)}
+                alt={event.title}
+                width={400}
+                height={250}
+                className="w-full h-48 object-cover"
+              />
               <div className="p-4">
                 <div className="font-semibold text-gray-900 text-base mb-1 truncate">{event.title}</div>
                 <div className="text-gray-600 text-sm mb-2">{event.location?.address || event.location}</div>
