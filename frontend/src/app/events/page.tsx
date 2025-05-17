@@ -107,6 +107,7 @@ export default function EventsPage() {
       ? event.imageUrl
       : `${process.env.NEXT_PUBLIC_API_URL}${event.imageUrl.replace(/^\/api\/uploads/, '/uploads')}`
   }
+
   unoptimized
   alt={event.title}
   width={400}
