@@ -101,7 +101,7 @@ export default function EventsPage() {
         ) : (
           events.map((event) => (
             <div key={event._id} className="bg-white rounded-lg shadow-md overflow-hidden">
-              <Image src={`${process.env.NEXT_PUBLIC_API_URL}${event.imageUrl}`} unoptimized alt={event.title} width={400} height={250} className="w-full h-48 object-cover" />
+              <Image src={`${process.env.NEXT_PUBLIC_API_URL}${event.imageUrl.replace(/^\/api/, '')}`} unoptimized alt={event.title} width={400} height={250} className="w-full h-48 object-cover" />
               <div className="p-4">
                 <div className="font-semibold text-gray-900 text-base mb-1 truncate">{event.title}</div>
                 <div className="text-gray-600 text-sm mb-2">{event.location?.address || event.location}</div>
