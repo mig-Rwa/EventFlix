@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
-    domains: ['eventflix-backend.onrender.com'],
+    domains: ['res.cloudinary.com'],
   },
 };
 
