@@ -1,18 +1,17 @@
 import express from 'express';
 import multer from 'multer';
-import path from 'path';
+import { CloudinaryStorage } from 'multer-storage-cloudinary';
+import cloudinary from '../utils/cloudinary';
 import { Request, Response } from 'express';
 import { Event } from '../models/Event';
 
-
-
-const storage = multer.diskStorage({
-  destination: function (req: Request, file: Express.Multer.File, cb: (error: Error | null, destination: string) => void) {
-    cb(null, path.join(__dirname, '../../public/uploads'));
+// Cloudinary storage for multer
+const storage = new CloudinaryStorage({
+  cloudinary: cloudinary,
+  params: {
+    folder: 'eventflix_uploads',
+    allowed_formats: ['jpg', 'jpeg', 'png', 'gif'],
   },
-  filename: function (req: Request, file: Express.Multer.File, cb: (error: Error | null, filename: string) => void) {
-    cb(null, Date.now() + '-' + file.originalname);
-  }
 });
 const upload = multer({ storage });
 
@@ -52,7 +51,7 @@ router.post('/', auth, upload.single('image'), async (req: Request, res: Respons
       ticketTypes: typeof ticketTypes === 'string' ? JSON.parse(ticketTypes) : ticketTypes,
       location: typeof location === 'string' ? JSON.parse(location) : location,
       organizer,
-      imageUrl: `/uploads/${file.filename}`,
+      imageUrl: file.path, // Cloudinary URL
     });
 
     res.status(201).json(newEvent);
