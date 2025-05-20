@@ -13,7 +13,10 @@ const storage = new CloudinaryStorage({
     allowed_formats: ['jpg', 'jpeg', 'png', 'gif'],
   } as any, // Fix TS error for folder property
 });
-const upload = multer({ storage });
+const upload = multer({
+  storage,
+  limits: { fileSize: 20 * 1024 * 1024 }, // 20MB limit
+});
 
 import {
   createEvent,
