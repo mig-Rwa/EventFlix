@@ -8,9 +8,9 @@ import { format } from 'date-fns';
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 function getImageUrl(imageUrl: string) {
-  if (!imageUrl) return '/default-image.png'; // fallback if needed
+  if (!imageUrl) return '/default-image.png';
   if (imageUrl.startsWith('http')) return imageUrl;
-  // Remove accidental /api prefix
+  // Always strip /api from the start of the path for images
   return `${API_URL}${imageUrl.replace(/^\/api/, '')}`;
 }
 
