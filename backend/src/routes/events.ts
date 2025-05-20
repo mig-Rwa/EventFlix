@@ -11,7 +11,7 @@ const storage = new CloudinaryStorage({
   params: {
     folder: 'eventflix_uploads',
     allowed_formats: ['jpg', 'jpeg', 'png', 'gif'],
-  },
+  } as any, // Fix TS error for folder property
 });
 const upload = multer({ storage });
 
