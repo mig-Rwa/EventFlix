@@ -6,12 +6,13 @@ import { useState, useEffect } from "react";
 import { format } from 'date-fns';
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
+const STATIC_URL = process.env.NEXT_PUBLIC_STATIC_URL;
 
 function getImageUrl(imageUrl: string) {
   if (!imageUrl) return '/default-image.png';
   if (imageUrl.startsWith('http')) return imageUrl;
-  // Always strip /api from the start of the path for images
-  return `${API_URL}${imageUrl.replace(/^\/api/, '')}`;
+  // Use STATIC_URL for all images, always strip /api if present
+  return `${STATIC_URL}${imageUrl.replace(/^\/api/, '')}`;
 }
 
 
