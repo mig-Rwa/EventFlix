@@ -26,7 +26,7 @@ export default function EventsPage() {
   useEffect(() => {
     async function fetchEvents() {
       try {
-        const res = await fetch(`${API_URL}/events`);
+        const res = await fetch(`${API_URL}/api/events`);
         const data = await res.json();
         console.log("Fetched events data:", data);
         if (data && Array.isArray(data.events)) {
