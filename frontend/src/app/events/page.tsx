@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useState, useEffect } from "react";
 import { format } from 'date-fns';
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL;
+const API_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 const STATIC_URL = process.env.NEXT_PUBLIC_STATIC_URL;
 
 function getImageUrl(imageUrl: string) {
