@@ -28,30 +28,24 @@ interface Event {
   }>;
 }
 
-async function getEvent(id: string): Promise<Event | null> {
+// Next.js App Router server component for event details
+async function getEvent(id: string) {
   try {
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/events/${id}`,
-      { cache: "no-store" }
-    );
-    console.log("Event details fetch status:", res.status);
-    if (!res.ok) {
-      console.log("Event details fetch failed:", await res.text());
-      return null;
-    }
-    const event = await res.json();
-    console.log("Fetched event details:", event);
-    return event;
-  } catch (e) {
-    console.log("Fetch error:", e);
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/events/${id}`, { cache: "no-store" });
+    if (!res.ok) return null;
+    return await res.json();
+  } catch (err) {
+    console.error("Failed to fetch event:", err);
     return null;
   }
 }
 
 export default async function EventDetailPage({ params }: { params: { id: string } }) {
   const event = await getEvent(params.id);
-
-  if (!event) return notFound();
+  if (!event) {
+    // You can render a not-found UI or throw to trigger Next.js's built-in notFound page
+    return <div className="text-center mt-10 text-red-600">Event not found.</div>;
+  }
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col items-center py-10 px-2">
