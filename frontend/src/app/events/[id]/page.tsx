@@ -14,10 +14,18 @@ interface Event {
   genres: string[];
   hashtags: string[];
   seller: string;
-  address?: string;
-  city?: string;
-  country?: string;
   description?: string;
+  location?: {
+    address?: string;
+    city?: string;
+    state?: string;
+    country?: string;
+  };
+  ticketTypes?: Array<{
+    name: string;
+    price: number;
+    quantity: number;
+  }>;
 }
 
 async function getEvent(id: string): Promise<Event | null> {
