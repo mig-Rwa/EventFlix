@@ -34,9 +34,16 @@ async function getEvent(id: string): Promise<Event | null> {
       `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/events/${id}`,
       { cache: "no-store" }
     );
-    if (!res.ok) return null;
-    return await res.json();
-  } catch {
+    console.log("Event details fetch status:", res.status);
+    if (!res.ok) {
+      console.log("Event details fetch failed:", await res.text());
+      return null;
+    }
+    const event = await res.json();
+    console.log("Fetched event details:", event);
+    return event;
+  } catch (e) {
+    console.log("Fetch error:", e);
     return null;
   }
 }
