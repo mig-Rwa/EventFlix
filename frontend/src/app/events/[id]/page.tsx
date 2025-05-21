@@ -89,8 +89,18 @@ export default async function EventDetailPage({ params }: { params: { id: string
             ))}
           </div>
           <div className="mb-2">
-            <span className="font-semibold">Location:</span> {event.address}, {event.city}, {event.country}
+            <span className="font-semibold">Location:</span> {event.location?.address}, {event.location?.city}, {event.location?.country}
           </div>
+          {event.ticketTypes && Array.isArray(event.ticketTypes) && (
+            <div className="mb-2">
+              <span className="font-semibold">Ticket Types:</span>
+              <ul className="list-disc list-inside">
+                {event.ticketTypes.map((tt: any, idx: number) => (
+                  <li key={idx}>{tt.name} - ${tt.price} ({tt.quantity} available)</li>
+                ))}
+              </ul>
+            </div>
+          )}
           <div className="mb-2">
             <span className="font-semibold">Description:</span> {event.description}
           </div>
