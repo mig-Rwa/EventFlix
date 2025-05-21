@@ -78,7 +78,7 @@ export default async function EventDetailPage({ params }: { params: { id: string
             <span className="font-semibold">Headliners:</span> {event.headliners?.join(", ")}
           </div>
           <div className="mb-2">
-            <span className="font-semibold">Genres:</span> {event.genres?.map((g) => (
+            <span className="font-semibold">Genres:</span> {event.genres?.map((g: string) => (
               <span
                 key={g}
                 className="inline-block bg-gray-200 text-gray-800 rounded px-2 py-1 text-xs font-medium mr-2"
@@ -88,7 +88,7 @@ export default async function EventDetailPage({ params }: { params: { id: string
             ))}
           </div>
           <div className="mb-2">
-            <span className="font-semibold">Hashtags:</span> {event.hashtags?.map((h) => (
+            <span className="font-semibold">Hashtags:</span> {event.hashtags?.map((h: string) => (
               <span
                 key={h}
                 className="inline-block bg-gray-100 text-gray-700 rounded px-2 py-1 text-xs font-medium mr-2"
@@ -104,7 +104,7 @@ export default async function EventDetailPage({ params }: { params: { id: string
             <div className="mb-2">
               <span className="font-semibold">Ticket Types:</span>
               <ul className="list-disc list-inside">
-                {event.ticketTypes.map((tt: any, idx: number) => (
+                {event.ticketTypes.map((tt: { name: string; price: number; quantity: number }, idx: number) => (
                   <li key={idx}>{tt.name} - ${tt.price} ({tt.quantity} available)</li>
                 ))}
               </ul>
